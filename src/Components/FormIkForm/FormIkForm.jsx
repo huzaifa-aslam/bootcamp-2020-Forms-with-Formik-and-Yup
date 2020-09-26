@@ -1,5 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
+import * as yup from 'yup';
+
 
 export const FormIkForm = () => {
   const formIk = useFormik({
@@ -10,12 +12,26 @@ export const FormIkForm = () => {
     onSubmit: (values) => {
       console.log(values);
     },
-    validate: (values) => {
-      let error = {};
-      if (!values.email) error.email = "Email is Required";
-      if (!values.password) error.password = "Password is Required";
-      return error;
-    },
+
+    // ************custom validation****************
+
+    // validate: (values) => {
+    //   let error = {};
+    //   if (!values.email) error.email = "Email is Required";
+    //   if (!values.password) error.password = "Password is Required";
+    //   return error;
+    // }
+
+
+    //  ************validation with Yup****************
+
+    validationSchema: yup.object({
+        email: yup.string().email().required('This field is required.'),
+        password: yup.string()
+        .min(6, 'Password is too short.')
+        .max(12, 'Password is too long.')
+        .required('This field is required.')
+    })
   });
   return (
     <div>
